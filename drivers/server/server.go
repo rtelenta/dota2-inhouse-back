@@ -24,8 +24,11 @@ func setRoutes(engine *gin.Engine) {
 	engine.GET("/health", health)
 
 	api := engine.Group("/api")
-	api.POST("/players", validPlayer(), postPlayers)
 	api.GET("/players", getPlayers)
+	api.GET("/players/:playerId", getPlayersById)
+	api.POST("/players", validPlayer(), postPlayers)
+	api.PUT("/players/:playerId", validPlayer(), putPlayers)
+	api.DELETE("/players/:playerId", deletePlayers)
 
 	steam := api.Group("/steam")
 	steam.GET("/players/:playerUrl", getSteamUser)

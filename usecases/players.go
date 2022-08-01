@@ -20,12 +20,16 @@ func PlayersCreate(player domain.Player) (newPlayer domain.Player, code int, err
 		return
 	}
 
+	player.Active = true
+
 	var newid primitive.ObjectID
-	if newid, err = playersDB.Create(player); err != nil {
+
+	if newid, err = playersDB.Create(newPlayer); err != nil {
 		code = http.StatusServiceUnavailable
 		err = errors.New(http.StatusText(code))
 		return
 	}
+
 	newPlayer = player
 	newPlayer.ID = &newid
 
@@ -34,6 +38,43 @@ func PlayersCreate(player domain.Player) (newPlayer domain.Player, code int, err
 
 func PlayersList() (players domain.Players, code int, err error) {
 	if players, err = playersDB.List(); err != nil {
+		code = http.StatusServiceUnavailable
+		err = errors.New(http.StatusText(code))
+		return
+	}
+
+	return
+}
+
+func PlayersDetails(playerId string) (player domain.Player, code int, err error) {
+	if player, err = playersDB.Details(playerId); err != nil {
+		code = http.StatusServiceUnavailable
+		err = errors.New(http.StatusText(code))
+		return
+	}
+
+	return
+}
+
+func PlayersDelete(playerId string) (deletedPlayer domain.Player, code int, err error) {
+	if deletedPlayer, code, err = PlayersDetails(playerId); err != nil {
+		return
+	}
+
+	if err = playersDB.Delete(playerId); err != nil {
+		code = http.StatusServiceUnavailable
+		err = errors.New(http.StatusText(code))
+		return
+	}
+
+	return
+}
+
+func PlayersUpdate(player domain.Player) (updatedPlayer domain.Player, code int, err error) {
+
+	player.Active = true
+
+	if updatedPlayer, err = playersDB.Update(player); err != nil {
 		code = http.StatusServiceUnavailable
 		err = errors.New(http.StatusText(code))
 		return

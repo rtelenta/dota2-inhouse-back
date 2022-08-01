@@ -12,6 +12,9 @@ type playersDBbridge interface {
 	Create(player domain.Player) (newid primitive.ObjectID, err error)
 	Exists(steamId string) (exists bool)
 	List() (playersList domain.Players, err error)
+	Delete(playerId string) (err error)
+	Update(player domain.Player) (updatedPlayer domain.Player, err error)
+	Details(playerId string) (player domain.Player, err error)
 }
 
 type steamAPIbridge interface {

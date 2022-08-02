@@ -24,7 +24,7 @@ func PlayersCreate(player domain.Player) (newPlayer domain.Player, code int, err
 
 	var newid primitive.ObjectID
 
-	if newid, err = playersDB.Create(newPlayer); err != nil {
+	if newid, err = playersDB.Create(player); err != nil {
 		code = http.StatusServiceUnavailable
 		err = errors.New(http.StatusText(code))
 		return

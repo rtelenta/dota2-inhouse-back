@@ -14,7 +14,7 @@ dev:
 # DOCKER
 
 docker-build:
-	docker build -f docker/prd/Dockerfile -t renzotelenta.com/dota2:latest .
+	docker build -f Dockerfile -t renzotelenta.com/dota2:latest .
 
 docker-run:
 	docker run --rm -it \

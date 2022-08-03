@@ -58,7 +58,7 @@ func (Handler) GetSteamId(vanityurl string) (steamId string, err error) {
 	}
 
 	if statusVanityUrl != http.StatusOK {
-		err = fmt.Errorf("status code error from steam: %v", statusVanityUrl)
+		err = fmt.Errorf("status code error from SteamAPI: %v", statusVanityUrl)
 		return
 	}
 
@@ -86,7 +86,7 @@ func (Handler) GetPlayerData(steamId string) (player domain.Player, err error) {
 	}
 
 	if statusPlayerData != http.StatusOK {
-		err = fmt.Errorf("status code error from steam: %v", statusPlayerData)
+		err = fmt.Errorf("status code error from SteamAPI: %v", statusPlayerData)
 		return
 	}
 

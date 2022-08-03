@@ -18,7 +18,8 @@ type playersDBbridge interface {
 }
 
 type steamAPIbridge interface {
-	GetPlayerData(vanityurl string) (player domain.Player, err error)
+	GetPlayerData(steamId string) (player domain.Player, err error)
+	GetSteamId(vanityurl string) (steamId string, err error)
 }
 
 func SetBridges(

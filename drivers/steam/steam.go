@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"regexp"
 	"time"
 
 	"renzotelenta.com/dota2/domain"
@@ -40,7 +41,19 @@ func init() {
 
 }
 
-func (Handler) GetPlayerData(vanityurl string) (player domain.Player, err error) {
+func (Handler) GetSteamId(vanityurl string) (steamId string, err error) {
+	var isSteamId bool
+
+	isSteamId, err = regexp.MatchString("^[0-9]{17}$", vanityurl)
+
+	if err != nil {
+		return
+	}
+
+	if isSteamId {
+		steamId = vanityurl
+		return
+	}
 
 	statusVanityUrl, bodyVanityUrl, errVanityUrl := exec("GET", fmt.Sprintf("%s%s%s%s", "/ISteamUser/ResolveVanityURL/v0001/?key=", key, "&vanityurl=", vanityurl), nil)
 
@@ -64,7 +77,13 @@ func (Handler) GetPlayerData(vanityurl string) (player domain.Player, err error)
 		return
 	}
 
-	statusPlayerData, bodyPlayerData, errPlayerData := exec("GET", fmt.Sprintf("%s%s%s%s", "/ISteamUser/GetPlayerSummaries/v2/?format=json&key=", key, "&steamids=", vanityUrlResource.Response.SteamId), nil)
+	steamId = vanityUrlResource.Response.SteamId
+
+	return
+}
+
+func (Handler) GetPlayerData(steamId string) (player domain.Player, err error) {
+	statusPlayerData, bodyPlayerData, errPlayerData := exec("GET", fmt.Sprintf("%s%s%s%s", "/ISteamUser/GetPlayerSummaries/v2/?format=json&key=", key, "&steamids=", steamId), nil)
 
 	if errPlayerData != nil {
 		return

@@ -44,11 +44,7 @@ func init() {
 func (Handler) GetSteamId(vanityurl string) (steamId string, err error) {
 	var isSteamId bool
 
-	isSteamId, err = regexp.MatchString("^[0-9]{17}$", vanityurl)
-
-	if err != nil {
-		return
-	}
+	isSteamId, _ = regexp.MatchString("^[0-9]{17}$", vanityurl)
 
 	if isSteamId {
 		steamId = vanityurl

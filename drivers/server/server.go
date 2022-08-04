@@ -35,7 +35,7 @@ func setRoutes(engine *gin.Engine) {
 }
 
 func status(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{"status": "UP"})
+	c.JSON(http.StatusOK, gin.H{"status": "up"})
 }
 
 func health(c *gin.Context) {
